@@ -7,5 +7,6 @@
 {% block body %}
 
     {{ entry|safe }}
-
+    
+    <a href="/edit/{{ title|striptags }}">Edit</a>
 {% endblock %}

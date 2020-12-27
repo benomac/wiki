@@ -4,10 +4,14 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django import forms
 from . import util
+import random
 
 # class to create form on "create page"
 class NewEntryForm(forms.Form):
     title = forms.CharField(label="Entry title")
+    description = forms.CharField(widget=forms.Textarea())
+
+class EditEntry(forms.Form):
     description = forms.CharField(widget=forms.Textarea())
     
     
@@ -57,10 +61,11 @@ def create(request):
         form = NewEntryForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data["title"]
-            if title in util.list_entries():
-                return render(request, "encyclopedia/create.html", {
-        "warning":"An entry with that title already exists."
-    })
+            for entry in util.list_entries():
+                if title.lower() == entry.lower():
+                    return render(request, "encyclopedia/create.html", {
+            "warning":"An entry with that title already exists."
+        })
             description = form.cleaned_data["description"]
             util.save_entry(title, description)
             return HttpResponseRedirect(reverse('encyclopedia:rtrv_entry', args=[title]))
@@ -68,7 +73,22 @@ def create(request):
         "form":NewEntryForm()
     }) 
 
-        
+def edit(request, to_edit):
+    if request.method == "POST":
+        form = EditEntry(request.POST)
+        if form.is_valid():
+            description = form.cleaned_data["description"]
+            util.save_entry(to_edit, description)
+            return HttpResponseRedirect(reverse('encyclopedia:rtrv_entry', args=[to_edit]))
+    
+    desc = util.get_entry(to_edit)
+    return render(request, "encyclopedia/edit.html", {
+        "form":EditEntry(initial={'description': desc}), "to_edit":to_edit
+    }) 
+
+def random_page(request):
+    random_p = random.choice(util.list_entries())
+    return HttpResponseRedirect(reverse('encyclopedia:rtrv_entry', args=[random_p]))
         
 
 
