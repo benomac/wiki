@@ -1,0 +1,27 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+   Edit
+{% endblock %}
+
+{% block body %}
+
+
+
+{% if form %}
+    <h1>Edit</h1>
+    <form action="" method="post">
+        <p>Edit description for <b>{{ to_edit }}</b>.</p>
+        
+        <div id="edit_desc">
+            {% csrf_token %}
+            {{ form.description }}
+        </div>
+        <div>
+        <input type="submit"> 
+        </div>
+    </form>
+{% else %}
+{{ warning }}
+{% endif %}
+{% endblock %}
