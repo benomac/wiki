@@ -5,8 +5,14 @@
 {% endblock %}
 
 {% block body %}
-
-    {{ entry|safe }}
+    {% if warning %}
     
-    <a href="/edit/{{ title|striptags }}">Edit</a>
+        {{ warning }}
+    
+    {% else %}
+
+        {{ entry|safe }}
+        <a href="/edit/{{ title|striptags }}">Edit</a>
+        
+    {% endif %}
 {% endblock %}

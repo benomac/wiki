@@ -23,7 +23,10 @@ def index(request):
 
 def rtrv_entry(request, entry):
     if not util.get_entry(entry):
-        result = "ERROR 404: PAGE NOT FOUND"
+        warning = "ERROR 404: PAGE NOT FOUND"
+        return render(request, "encyclopedia/rtrv_entry.html", {
+        "warning": warning
+    })
     else:
         result = markdown2.markdown(util.get_entry(entry))
     return render(request, "encyclopedia/rtrv_entry.html", {
