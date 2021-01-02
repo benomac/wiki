@@ -1,6 +1,7 @@
 # wiki
 
 This is my version of the project wiki, for the online CS50’s Web Programming with Python and JavaScript course by edx.
+This was written using Django.
 
 Below I wlil paste the specification for this project.
 
